@@ -1,0 +1,138 @@
+body {
+    background-color: antiquewhite;
+}
+
+.buscador {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    background-color: rgb(201, 194, 185);
+    flex-wrap: wrap;
+    background-image: url(assets/image.png);
+
+}
+
+.recetas {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 65px;
+    margin: 40px 40px 40px 60px;
+    background-color: rgb(146, 131, 113);
+    border-radius: 10px;
+    position: relative;
+    
+}
+
+.recetas:hover .link-oculto {
+    opacity: 1;
+}
+
+.link-oculto {
+    position: absolute;
+    bottom: 10px; /* Ajusta la posición vertical */
+    left: 10px; /* Ajusta la posición horizontal */
+    
+    /* Ocultar el texto inicialmente */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out; /* Efecto de suavizado */
+    
+    /* Estilos opcionales para que se lea mejor */
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px;
+    text-decoration: none;
+}
+
+
+.buscadorInput {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 7px;
+    padding: 5px;
+    width: 100%;
+    gap: 10px;
+}
+
+.buscadorInput img {
+    height: 25px;
+    padding-left: 10px;
+}
+
+.buscadorInput h1 {
+    background-color: rgb(146, 131, 113);
+    border-radius: 10px;
+    padding: 10px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+input {
+    width: 50%;
+    border-radius: 7px;
+    padding: 5px;
+}
+
+button {
+    background-color: aqua;
+    border-radius: 7px;
+    width: 30%;
+    text-align: center;
+}
+
+
+.buscador p {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+}
+
+.buscador a {
+    width: 150px;
+    flex-wrap: wrap;
+}
+
+
+/* Tu contenedor actual */
+.recetas {
+  display: flex;
+  flex-wrap: wrap; /* Para que bajen a la siguiente fila */
+  gap: 20px;
+}
+
+/* La tarjeta (el Link) */
+.receta-card {
+  position: relative; /* Clave para posicionar el texto adentro */
+  display: inline-block;
+  overflow: hidden; /* Corta el texto si sale de la imagen */
+  border-radius: 8px;
+}
+
+.receta-img {
+  display: block;
+  width: 200px; /* Ajusta el tamaño que prefieras */
+  height: auto;
+}
+
+/* El texto que queremos ocultar */
+.receta-titulo {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.7); /* Fondo negro transparente */
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+  
+  /* Estado inicial: oculto */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Al pasar el mouse por el Link, mostramos el span */
+.receta-card:hover .receta-titulo {
+  opacity: 1;
+}

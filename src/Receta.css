@@ -1,0 +1,33 @@
+
+body{
+    background-image: url(assets/image2.png);
+}
+
+
+.recetaG {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 100px;
+    
+}
+
+
+p {
+    white-space: pre-line;
+}
+
+.receta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: antiquewhite;
+    width: 60%;
+    padding: 20px;
+}
+
+.receta a {
+    width: 50%;
+    text-align: center;
+}
+
