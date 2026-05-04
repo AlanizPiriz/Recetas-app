@@ -31,3 +31,12 @@ p {
     text-align: center;
 }
 
+.botonReceta{
+    width: 100%;
+}
+
+@media (max-width: 767px){
+    body{
+        width: 100%;
+    }
+}

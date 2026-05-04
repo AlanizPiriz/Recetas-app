@@ -6,24 +6,24 @@ import miIcono from './assets/pngwing.com.png';
 
 
 function Buscador() {
-    const [busqueda, setBusqueda] = useState("beef")
+    const [busqueda, setBusqueda] = useState("")
     const [recetas, setRecetas] = useState([])
-
-    
 
 
 
     function buscar() {
-        fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${busqueda}`)
+        fetch(`http://localhost:3001/api/recipes?q=${busqueda}`)
             .then(res => res.json())
             .then(datos => { 
-                setRecetas(datos.meals)
-                console.log(datos.meals)
+                setRecetas(datos)
+                console.log(datos)  
             })
     }
 
     useEffect(() => {
-        buscar();
+        fetch(`https://recipes-api-z0gz.onrender.com/api/recipes?q=${busqueda}`)
+            .then(res => res.json())
+            .then(datos => setRecetas(datos))
     }, []);
 
     return (
@@ -39,11 +39,11 @@ function Buscador() {
             </div>
             <div className="recetas">
             {recetas && recetas.map((item) => (
-            <Link to={`/receta/${item.idMeal}`} key={item.idMeal} className="receta-card">
-            <img src={item.strMealThumb} alt={item.strMeal} className="receta-img" />
-            <span className="receta-titulo">{item.strMeal}</span>
+            <Link to={`/receta/${item._id}`} key={item._id} className="receta-card">
+                <img src={item.image} alt={item.name} className="receta-img" />
+                <span className="receta-titulo">{item.name}</span>
             </Link>
-            ))}
+        ))}
         </div>
         </div>
     )
