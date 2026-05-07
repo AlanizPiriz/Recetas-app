@@ -37,7 +37,7 @@ function Buscador() {
             placeholder="Buscar receta..."
             />
             <button onClick={buscar}>Buscar</button>
-            <button onClick={recetaAleatoria}>🎲 Receta aleatoria</button>
+            <button onClick={recetaAleatoria}>¿Que cocino?</button>
             </div>
             <div className="recetas">
             {recetas && recetas.map((item) => (

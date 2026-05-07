@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 import './Receta.css'
+import { useParams, Link } from "react-router-dom"
 
 function Receta() {
     const { id } = useParams()
@@ -30,9 +31,9 @@ function Receta() {
                         <li key={index}>{ing}</li>
                     ))}
                 </ul>
-                <a href="/">
+                <Link to="/">
                     <button className="botonReceta">Volver a recetas</button>
-                </a>
+                </Link>
             </div>
             )}
         </div>
