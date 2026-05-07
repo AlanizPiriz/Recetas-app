@@ -1,5 +1,6 @@
 body {
     background-color: antiquewhite;
+    
 }
 
 .buscador {
@@ -10,7 +11,7 @@ body {
     background-color: rgb(201, 194, 185);
     flex-wrap: wrap;
     background-image: url(assets/image.png);
-
+    justify-content: center;
 }
 
 .recetas {
@@ -22,7 +23,6 @@ body {
     background-color: rgb(146, 131, 113);
     border-radius: 10px;
     position: relative;
-    
 }
 
 .recetas:hover .link-oculto {
@@ -111,8 +111,9 @@ button {
 
 .receta-img {
   display: block;
-  width: 200px; /* Ajusta el tamaño que prefieras */
-  height: auto;
+  width: 200px;
+  height: 150px;
+  object-fit: cover;
 }
 
 /* El texto que queremos ocultar */

@@ -3,27 +3,28 @@ import { Link } from 'react-router-dom'
 import './Buscador.css'
 import miIcono from './assets/pngwing.com.png';
 
-
+const API_URL = 'https://recipes-api-z0gz.onrender.com'
 
 function Buscador() {
     const [busqueda, setBusqueda] = useState("")
     const [recetas, setRecetas] = useState([])
 
-
-
     function buscar() {
-        fetch(`http://localhost:3001/api/recipes?q=${busqueda}`)
-            .then(res => res.json())
-            .then(datos => { 
-                setRecetas(datos)
-                console.log(datos)  
-            })
-    }
-
-    useEffect(() => {
-        fetch(`https://recipes-api-z0gz.onrender.com/api/recipes?q=${busqueda}`)
+        fetch(`${API_URL}/api/recipes?q=${busqueda}`)
             .then(res => res.json())
             .then(datos => setRecetas(datos))
+    }
+
+    function recetaAleatoria() {
+    fetch(`${API_URL}/api/recipes/random`)
+        .then(res => res.json())
+        .then(datos => setRecetas([datos]))
+    }
+
+
+
+    useEffect(() => {
+        buscar()
     }, []);
 
     return (
@@ -36,6 +37,7 @@ function Buscador() {
             placeholder="Buscar receta..."
             />
             <button onClick={buscar}>Buscar</button>
+            <button onClick={recetaAleatoria}>🎲 Receta aleatoria</button>
             </div>
             <div className="recetas">
             {recetas && recetas.map((item) => (
@@ -43,11 +45,13 @@ function Buscador() {
                 <img src={item.image} alt={item.name} className="receta-img" />
                 <span className="receta-titulo">{item.name}</span>
             </Link>
-        ))}
-        </div>
+            ))}
+            </div>
         </div>
     )
-    
+
 }
+
+
 
 export default Buscador
