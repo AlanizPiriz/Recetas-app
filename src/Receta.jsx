@@ -1,7 +1,7 @@
-import { useParams } from "react-router-dom"
+import { useParams, Link} from "react-router-dom"
 import { useState, useEffect } from "react"
 import './Receta.css'
-import { useParams, Link } from "react-router-dom"
+
 
 function Receta() {
     const { id } = useParams()
@@ -19,24 +19,28 @@ function Receta() {
     }, [id])
 
     return (
-        <div className="recetaG">
-            {receta && (
-            <div className="receta">
-                <h1>Detalle de receta</h1>
-                <h2>{receta.name}</h2>
-                <img src={receta.image} width="60%" />
-                <p>{receta.instructions}</p>
-                <ul>
-                    {receta.ingredients.map((ing, index) => (
-                        <li key={index}>{ing}</li>
-                    ))}
-                </ul>
-                <Link to="/">
-                    <button className="botonReceta">Volver a recetas</button>
-                </Link>
-            </div>
-            )}
+       <div className="recetaG">
+    {receta && (
+    <div className="receta">
+        <img src={receta.image} alt={receta.name} />
+        <div className="receta-contenido">
+            <h1>Receta sugerida</h1>
+            <h2>{receta.name}</h2>
+            <h3>Ingredientes</h3>
+            <ul>
+                {receta.ingredients.map((ing, index) => (
+                    <li key={index}>{ing}</li>
+                ))}
+            </ul>
+            <h3>Preparación</h3>
+            <p>{receta.instruction}</p>
+            <Link to="/">
+                <button className="botonReceta">← Volver</button>
+            </Link>
         </div>
+    </div>
+    )}
+</div>
     )
 }
 
