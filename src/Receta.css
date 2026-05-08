@@ -80,6 +80,10 @@
     white-space: pre-line;
 }
 
+.receta a {
+    text-decoration: none;
+}
+
 .botonReceta {
     display: block;
     width: 100%;

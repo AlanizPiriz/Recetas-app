@@ -47,7 +47,7 @@ function Buscador() {
             )}
 
             <button className="btn-principal" onClick={iluminame}>
-                {receta ? '🎲 Otra' : '✨ ¡Ilumíname!'}
+                {receta ? 'Otra?' : '✨ ¡Ilumíname!'}
             </button>
 
             <button className="btn-secundario" onClick={() => setMostrarBuscador(!mostrarBuscador)}>
