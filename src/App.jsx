@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route, HashRouter } from 'react-router-dom'
 import Buscador from './Buscador'
 import Receta from './Receta'
-
+import Login from './Login'
+import Admin from './Admin'
 
 function App() {
   return (
@@ -9,10 +10,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Buscador />} />
         <Route path="/receta/:id" element={<Receta />} />
+        <Route path="/admin/login" element={<Login />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </HashRouter>
   )
 }
-
 
 export default App
