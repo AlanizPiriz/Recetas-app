@@ -9,11 +9,19 @@ function Buscador() {
     const [mostrarBuscador, setMostrarBuscador] = useState(false)
     const [ingredientes, setIngredientes] = useState("")
     const [resultados, setResultados] = useState([])
+    const [ultimoId, setUltimoId] = useState(null)
 
     function iluminame() {
-        fetch(`${API_URL}/api/recipes/random`)
+    const url = ultimoId 
+        ? `${API_URL}/api/recipes/random?exclude=${ultimoId}`
+        : `${API_URL}/api/recipes/random`
+    
+        fetch(url)
             .then(res => res.json())
-            .then(datos => setReceta(datos))
+            .then(datos => {
+                setReceta(datos)
+                setUltimoId(datos._id)
+            })
     }
 
     function buscarPorIngredientes() {
