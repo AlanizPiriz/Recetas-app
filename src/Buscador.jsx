@@ -36,7 +36,6 @@ function Buscador() {
         localStorage.removeItem('tagActivo')
     }
     setTagActivo(tag)
-    setMenuAbierto(false)
     setReceta(null)
     setUltimoId(null)
     }
@@ -121,6 +120,9 @@ function Buscador() {
                 </div>
             </div>
         )}
+        <Link to="/semanal">
+            <button className="btn-secundario">📅 Menú semanal</button>
+        </Link>
     </div>
 )
 }
