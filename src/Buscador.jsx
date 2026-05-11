@@ -51,7 +51,13 @@ function Buscador() {
     return (
     <div className="home">
         <div className="navbar">
-            <h1>🍳 ¿Qué cocinamos hoy?</h1>
+            <h1>¿Qué cocinamos hoy?</h1>
+            {!receta && !mostrarBuscador && (
+            <p className="intro">
+                Dejá de pensar, nosotros te resolvemos<br />
+                el problema más difícil del día 🍽️
+            </p>
+        )}
         </div>
 
         <div className="chips">
@@ -73,13 +79,6 @@ function Buscador() {
 
         {tagActivo && (
             <p className="filtro-activo">Filtrando: <strong>{tagActivo}</strong></p>
-        )}
-
-        {!receta && !mostrarBuscador && (
-            <p className="intro">
-                Dejá de pensar, nosotros te resolvemos<br />
-                el problema más difícil del día 🍽️
-            </p>
         )}
 
         {receta && (
