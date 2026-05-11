@@ -199,3 +199,35 @@ h1 {
     font-weight: bold;
     text-align: center;
 }
+
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    max-width: 500px;
+}
+
+.chip {
+    background: rgba(255,255,255,0.25);
+    border: 2px solid rgba(255,255,255,0.5);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.chip:hover {
+    background: rgba(255,255,255,0.35);
+}
+
+.chip.activo {
+    background: white;
+    color: #ff6b6b;
+    border-color: white;
+    font-weight: bold;
+}
