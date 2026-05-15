@@ -145,3 +145,23 @@
 .semanal a {
     text-decoration: none;
 }
+
+.btn-lista-semanal {
+    background: white;
+    color: #ff6b6b;
+    border: none;
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 16px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 500px;
+    margin-top: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.2s;
+}
+
+.btn-lista-semanal:hover {
+    transform: translateX(4px);
+}

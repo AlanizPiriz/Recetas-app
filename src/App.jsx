@@ -4,6 +4,7 @@ import Receta from './Receta'
 import Login from './Login'
 import Admin from './Admin'
 import Semanal from './Semanal'
+import Lista from './Lista'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/admin/login" element={<Login />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/semanal" element={<Semanal />} />
+        <Route path="/lista" element={<Lista />} />
       </Routes>
     </HashRouter>
   )

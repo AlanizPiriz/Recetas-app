@@ -11,6 +11,7 @@ function Buscador() {
     const [resultados, setResultados] = useState([])
     const [ultimoId, setUltimoId] = useState(null)
     const [tagActivo, setTagActivo] = useState(localStorage.getItem('tagActivo') || null)
+    const [hayLista, setHayLista] = useState(!!localStorage.getItem('listaCompras'))
 
     function iluminame() {
     console.log('tag activo:', tagActivo)
@@ -60,7 +61,7 @@ function Buscador() {
         </div>
 
         <div className="chips">
-    {['vegano', 'vegetariano', 'sinTacc', 'sinLactosa', 'rapida', 'postre'].map(tag => (
+    {['vegano', 'vegetariano', 'sinTacc', 'sinLactosa', 'rapida', 'postre', 'bajoEnCalorias', 'altoEnProteinas'].map(tag => (
         <button
             key={tag}
             className={`chip ${tagActivo === tag ? 'activo' : ''}`}
@@ -72,6 +73,8 @@ function Buscador() {
             {tag === 'sinLactosa' && '🥛 Sin lactosa'}
             {tag === 'rapida' && '⚡ Rápidas'}
             {tag === 'postre' && '🍮 Postres'}
+            {tag === 'bajoEnCalorias' && '🥗 Bajo en calorías'}
+            {tag === 'altoEnProteinas' && '💪 Alto en proteínas'}
         </button>
     ))}
     </div>
@@ -123,6 +126,12 @@ function Buscador() {
         <Link to="/semanal">
             <button className="btn-secundario">📅 Menú semanal</button>
         </Link>
+        {hayLista && (
+            <Link to="/lista" className="lista-tab">
+                🛒
+                <span>Mi lista</span>
+            </Link>
+        )}
     </div>
 )
 }

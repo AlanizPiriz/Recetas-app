@@ -61,7 +61,7 @@ function Admin() {
         navigate('/')
     }
 
-    const TAGS = ['vegano', 'vegetariano', 'sinTacc', 'sinLactosa', 'rapida', 'postre']
+    const TAGS = ['vegano', 'vegetariano', 'sinTacc', 'sinLactosa', 'rapida', 'postre', 'bajoEnCalorias', 'altoEnProteinas']
 
     return (
         <div className="admin">

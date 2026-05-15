@@ -1,29 +1,49 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import './Semanal.css'
 
 const API_URL = 'https://recipes-api-z0gz.onrender.com'
 
 function Semanal() {
-    const [dias, setDias] = useState(5)
-    const [recetas, setRecetas] = useState([])
+    const [recetas, setRecetas] = useState(() => {
+    const guardadas = localStorage.getItem('menuSemanal')
+    return guardadas ? JSON.parse(guardadas) : []
+    })
+
+    const [dias, setDias] = useState(() => {
+        return parseInt(localStorage.getItem('diasSemanal')) || 5
+    })
+
     const [cargando, setCargando] = useState(false)
+    const navigate = useNavigate()
+
+    function irAListaSemanal() {
+    const todos = recetas.flatMap(r => r.ingredients)
+    const unicos = [...new Set(todos)]
+    localStorage.setItem('listaCompras', JSON.stringify({
+        receta: `Menú semanal (${dias} días)`,
+        items: unicos
+    }))
+    navigate('/lista?from=semanal')
+    }
 
     function generarMenu() {
-        setCargando(true)
-        const tag = localStorage.getItem('tagActivo') || ''
-        const url = `${API_URL}/api/recipes/weekly?days=${dias}${tag ? `&tag=${tag}` : ''}`
+    setCargando(true)
+    const tag = localStorage.getItem('tagActivo') || ''
+    const url = `${API_URL}/api/recipes/weekly?days=${dias}${tag ? `&tag=${tag}` : ''}`
 
-        fetch(url)
-            .then(res => res.json())
-            .then(datos => {
-                if (Array.isArray(datos)) {
+    fetch(url)
+        .then(res => res.json())
+        .then(datos => {
+            if (Array.isArray(datos)) {
                 setRecetas(datos)
+                localStorage.setItem('menuSemanal', JSON.stringify(datos))
+                localStorage.setItem('diasSemanal', dias)
             }
-                setCargando(false)
+            setCargando(false)
         })
-            .catch(() => setCargando(false))
-    }
+        .catch(() => setCargando(false))
+    }   
 
     return (
         <div className="semanal">
@@ -48,13 +68,18 @@ function Semanal() {
 
             <div className="lista-semanal">
                 {recetas.map((receta, index) => (
-                    <Link to={`/receta/${receta._id}`} key={receta._id} className="card-semanal">
+                    <Link to={`/receta/${receta._id}?from=semanal`} key={receta._id} className="card-semanal">
                         <span className="dia-label">Día {index + 1}</span>
                         <img src={receta.image} alt={receta.name} />
                         <span className="nombre">{receta.name}</span>
                     </Link>
                 ))}
             </div>
+            {recetas.length > 0 && (
+            <button className="btn-lista-semanal" onClick={irAListaSemanal}>
+                🛒 Lista de compras semanal
+            </button>
+            )}
             <Link to="/">
                 <button className="botonReceta">← Volver</button>
             </Link>
