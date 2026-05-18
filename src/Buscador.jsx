@@ -10,15 +10,17 @@ function Buscador() {
     const [ingredientes, setIngredientes] = useState("")
     const [resultados, setResultados] = useState([])
     const [ultimoId, setUltimoId] = useState(null)
-    const [tagActivo, setTagActivo] = useState(localStorage.getItem('tagActivo') || null)
+    const [tagsActivos, setTagsActivos] = useState(() => {
+    const guardados = localStorage.getItem('tagsActivos')
+        return guardados ? JSON.parse(guardados) : []
+    })
     const [hayLista, setHayLista] = useState(!!localStorage.getItem('listaCompras'))
 
     function iluminame() {
-    console.log('tag activo:', tagActivo)
     let url = `${API_URL}/api/recipes/random`
     const params = []
     if (ultimoId) params.push(`exclude=${ultimoId}`)
-    if (tagActivo) params.push(`tag=${tagActivo}`)
+    if (tagsActivos.length) params.push(`tags=${tagsActivos.join(',')}`)
     if (params.length) url += `?${params.join('&')}`
 
     fetch(url)
@@ -31,12 +33,12 @@ function Buscador() {
     }
 
     function cambiarTag(tag) {
-    if (tag) {
-        localStorage.setItem('tagActivo', tag)
-    } else {
-        localStorage.removeItem('tagActivo')
-    }
-    setTagActivo(tag)
+    const nuevos = tagsActivos.includes(tag)
+        ? tagsActivos.filter(t => t !== tag)
+        : [...tagsActivos, tag]
+    
+    localStorage.setItem('tagsActivos', JSON.stringify(nuevos))
+    setTagsActivos(nuevos)
     setReceta(null)
     setUltimoId(null)
     }
@@ -46,6 +48,20 @@ function Buscador() {
         fetch(`${API_URL}/api/recipes?q=${lista}`)
             .then(res => res.json())
             .then(datos => setResultados(datos))
+    }
+
+    function formatearTag(tag) {
+    const tags = {
+        vegano: '🌱 Vegano',
+        vegetariano: '🥦 Vegetariano',
+        sinTacc: '🌾 Sin TACC',
+        sinLactosa: '🥛 Sin lactosa',
+        rapida: '⚡ Rápidas',
+        postre: '🍮 Postres',
+        bajoEnCalorias: '🥗 Bajo en calorías',
+        altoEnProteinas: '💪 Alto en proteínas'
+    }
+    return tags[tag] || tag
     }
 
     return (
@@ -59,13 +75,25 @@ function Buscador() {
             </p>
         )}
         </div>
+        <div className="emojis-fondo">
+            <span className="emoji-flotante">🍗</span>
+            <span className="emoji-flotante">🥕</span>
+            <span className="emoji-flotante">🍳</span>
+            <span className="emoji-flotante">🧅</span>
+            <span className="emoji-flotante">🥩</span>
+            <span className="emoji-flotante">🫕</span>
+            <span className="emoji-flotante">🧄</span>
+            <span className="emoji-flotante">🥚</span>
+            <span className="emoji-flotante">🍅</span>
+            <span className="emoji-flotante">👨‍🍳</span>
+        </div>
 
         <div className="chips">
     {['vegano', 'vegetariano', 'sinTacc', 'sinLactosa', 'rapida', 'postre', 'bajoEnCalorias', 'altoEnProteinas'].map(tag => (
         <button
             key={tag}
-            className={`chip ${tagActivo === tag ? 'activo' : ''}`}
-            onClick={() => cambiarTag(tagActivo === tag ? null : tag)}
+            className={`chip ${tagsActivos.includes(tag) ? 'activo' : ''}`}
+            onClick={() => cambiarTag(tagsActivos === tag ? null : tag)}
         >
             {tag === 'vegano' && '🌱 Vegano'}
             {tag === 'vegetariano' && '🥦 Veggie'}
@@ -79,8 +107,10 @@ function Buscador() {
     ))}
     </div>
 
-        {tagActivo && (
-            <p className="filtro-activo">Filtrando: <strong>{tagActivo}</strong></p>
+        {tagsActivos.length > 0 && (
+            <p className="filtro-activo">
+                Filtrando: {tagsActivos.map(t => <strong key={t}>{formatearTag(t)} </strong>)}
+            </p>
         )}
 
         {receta && (

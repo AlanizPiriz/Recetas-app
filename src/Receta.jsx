@@ -96,6 +96,18 @@ function Receta() {
 
     return (
        <div className="recetaG">
+        <div className="emojis-fondo">
+            <span className="emoji-flotante">🍗</span>
+            <span className="emoji-flotante">🥕</span>
+            <span className="emoji-flotante">🍳</span>
+            <span className="emoji-flotante">🧅</span>
+            <span className="emoji-flotante">🥩</span>
+            <span className="emoji-flotante">🫕</span>
+            <span className="emoji-flotante">🧄</span>
+            <span className="emoji-flotante">🥚</span>
+            <span className="emoji-flotante">🍅</span>
+            <span className="emoji-flotante">👨‍🍳</span>
+        </div>
     {receta && (
     <div className="receta">
         <img src={receta.image} alt={receta.name} />

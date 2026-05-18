@@ -19,7 +19,20 @@ function Semanal() {
 
     function irAListaSemanal() {
     const todos = recetas.flatMap(r => r.ingredients)
-    const unicos = [...new Set(todos)]
+    
+    // Extraer solo el ingrediente sin cantidad
+    const simplificados = todos.map(ing => 
+        ing.replace(/^\d+[\d,./]*\s*(g|kg|ml|litros?|tazas?|cucharadas?|cucharaditas?|fetas?|dientes?|hojas?|potes?|latas?|botellas?|paquetes?|unidades?)\s*(de\s*)?/i, '')
+        .replace(/^(un|una|unos|unas|\d+)\s*/i, '')
+        .trim()
+        .toLowerCase()
+    )
+    
+    // Deduplicar
+    const unicos = [...new Set(simplificados)].map(i => 
+        i.charAt(0).toUpperCase() + i.slice(1)
+    )
+    
     localStorage.setItem('listaCompras', JSON.stringify({
         receta: `Menú semanal (${dias} días)`,
         items: unicos
@@ -60,6 +73,18 @@ function Semanal() {
                         {d} días
                     </button>
                 ))}
+            </div>
+            <div className="emojis-fondo">
+                <span className="emoji-flotante">🍗</span>
+                <span className="emoji-flotante">🥕</span>
+                <span className="emoji-flotante">🍳</span>
+                <span className="emoji-flotante">🧅</span>
+                <span className="emoji-flotante">🥩</span>
+                <span className="emoji-flotante">🫕</span>
+                <span className="emoji-flotante">🧄</span>
+                <span className="emoji-flotante">🥚</span>
+                <span className="emoji-flotante">🍅</span>
+                <span className="emoji-flotante">👨‍🍳</span>
             </div>
 
             <button className="btn-generar" onClick={generarMenu}>
