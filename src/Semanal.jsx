@@ -42,8 +42,8 @@ function Semanal() {
 
     function generarMenu() {
     setCargando(true)
-    const tag = localStorage.getItem('tagActivo') || ''
-    const url = `${API_URL}/api/recipes/weekly?days=${dias}${tag ? `&tag=${tag}` : ''}`
+    const tagsActivos = JSON.parse(localStorage.getItem('tagsActivos') || '[]')
+    const url = `${API_URL}/api/recipes/weekly?days=${dias}${tagsActivos.length ? `&tags=${tagsActivos.join(',')}` : ''}`
 
     fetch(url)
         .then(res => res.json())
@@ -56,7 +56,7 @@ function Semanal() {
             setCargando(false)
         })
         .catch(() => setCargando(false))
-    }   
+    }
 
     return (
         <div className="semanal">
