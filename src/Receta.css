@@ -54,15 +54,30 @@
     bottom: 34px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(59,109,17,0.25);
+    background: rgba(59, 109, 17, 0.25);
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(192,221,151,.4);
+    border: 1px solid rgba(192, 221, 151, .4);
     color: white;
-    padding: 18px 4px;
+    padding: 18px 24px;       /* Aumenté el padding lateral de 4px a 24px para que respire el texto */
     border-radius: 30px;
     font-size: 1rem;
     font-weight: 600;
+    
+    /* SOLUCIÓN: Evita el salto de línea y controla el espacio en celulares */
+    white-space: nowrap;       /* Fuerza a que todo el texto se quede en una sola línea */
+    width: max-content;        /* Se ajusta exactamente al tamaño del texto */
+    max-width: calc(100% - 32px); /* Evita que rompa la pantalla si el celular es ultra chico */
+    box-sizing: border-box;
 }
+
+/* Opcional: Si el texto es demasiado largo para celulares muy viejos o chicos */
+@media (max-width: 360px) {
+    .swipe-overlay {
+        font-size: 0.9rem;     /* Achica un mínimo la letra si el celular es muy angosto */
+        padding: 14px 18px;
+    }
+}
+
 
 /* CONTENIDO */
 

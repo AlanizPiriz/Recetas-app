@@ -290,6 +290,7 @@ h1 {
 
     .btn-content {
         word-break: break-word; /* Protege contra palabras excesivamente largas */
+        text-align: center;
     }
 
     .btn-content h3 {
