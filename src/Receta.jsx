@@ -1,8 +1,8 @@
 import { useParams, Link, useNavigate, useLocation } from "react-router-dom"
 import { useState, useEffect } from "react"
 import './Receta.css'
-
-
+import { motion } from 'framer-motion'
+import random from './assets/aleatorio.png'
 
 
 
@@ -94,45 +94,156 @@ function Receta() {
     navigate(`/lista${from === 'semanal' ? '?from=semanal' : ''}`)
     }   
 
+    async function otraReceta() {
+    try {
+        const res = await fetch(
+            `https://recipes-api-z0gz.onrender.com/api/recipes/random?exclude=${id}`
+        )
+
+        const data = await res.json()
+
+        if (data?._id) {
+            navigate(`/receta/${data._id}`)
+        }
+
+    } catch (err) {
+        console.log(err)
+    }
+    }
+
     return (
-       <div className="recetaG">
-        <div className="emojis-fondo">
-            <span className="emoji-flotante">🍗</span>
-            <span className="emoji-flotante">🥕</span>
-            <span className="emoji-flotante">🍳</span>
-            <span className="emoji-flotante">🧅</span>
-            <span className="emoji-flotante">🥩</span>
-            <span className="emoji-flotante">🫕</span>
-            <span className="emoji-flotante">🧄</span>
-            <span className="emoji-flotante">🥚</span>
-            <span className="emoji-flotante">🍅</span>
-            <span className="emoji-flotante">👨‍🍳</span>
-        </div>
-    {receta && (
-    <div className="receta">
-        <img src={receta.image} alt={receta.name} />
-        <div className="receta-contenido">
-            <h1>Receta sugerida</h1>
-            <h2>{receta.name}</h2>
-            <h3>Ingredientes</h3>
-            <ul>
-                {receta.ingredients.map((ing, index) => (
-                    <li key={index}>{ing}</li>
-                ))}
-            </ul>
-            <h3>Preparación</h3>
-            <p>{receta.instruction}</p>
-            <button className="botonReceta" onClick={() => navigate(from === 'semanal' ? '/semanal' : '/')}>
-                ← Volver
-            </button>
-            <button className="botonLista" onClick={irALista}>
-                🛒 Descargar lista de compras
-            </button>
-        </div>
+    <div className="detalle-receta">
+
+        {receta && (
+            <>
+                <motion.div
+                    className="hero-receta"
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 0 }}
+                    whileTap={{ cursor: "grabbing" }}
+                    onDragEnd={(event, info) => {
+                        if (
+                            info.offset.x > 120 ||
+                            info.offset.x < -120
+                        ) {
+                            otraReceta()
+                        }
+                    }}
+                >
+
+                    <img src={receta.image} alt={receta.name} />
+
+                    <button
+                        className="back-btn"
+                        onClick={() =>
+                            navigate(from === 'semanal' ? '/semanal' : '/')
+                        }
+                    >
+                        ←
+                    </button>
+
+                    <button className="fav-btn">
+                        ♡
+                    </button>
+
+                    <div className="swipe-overlay">
+                        ← Deslizá para otra receta →
+                    </div>
+
+                </motion.div>
+
+                <div className="contenido-receta">
+
+                    <h1>{receta.name}</h1>
+
+                    <div className="info-receta">
+
+                        {receta.tags?.map((tag, index) => (
+                            <div key={tag} className="tag-inline">
+                            
+                                <span>
+                                    {tag === 'vegano' && '🌱 Vegano'}
+                                    {tag === 'vegetariano' && '🥦 Veggie'}
+                                    {tag === 'sinTacc' && '🌾 Sin TACC'}
+                                    {tag === 'sinLactosa' && '🥛 Sin lactosa'}
+                                    {tag === 'rapida' && '⚡ Rápida'}
+                                    {tag === 'postre' && '🍮 Postre'}
+                                    {tag === 'bajoEnCalorias' && '🥗 Light'}
+                                    {tag === 'altoEnProteinas' && '💪 Proteínas'}
+                                </span>
+                        
+                            </div>
+                        ))}
+                    
+                    </div>
+
+                    <div className="bloque-receta">
+
+                        <h3>Ingredientes</h3>
+
+                        <ul className="ingredientes-lista">
+                            {receta.ingredients.map((ing, index) => (
+                                <li key={index}>{ing}</li>
+                            ))}
+                        </ul>
+
+                        <h3>Preparación</h3>
+
+                        <p className="preparacion">
+                            {receta.instruction}
+                        </p>
+
+                    </div>
+
+                    <button
+                        className="btn-principal"
+                        onClick={otraReceta}
+                    >
+                        <img src={random} alt="" className="icono-random" /> Otra receta
+                    </button>
+
+                    <button
+                        className="btn-secundario"
+                        onClick={irALista}
+                    >
+                        🛒 Lista de compras
+                    </button>
+
+                </div>
+
+                <div className="bottom-nav">
+
+                    <Link to="/" className="nav-item active">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" strokeWidth="2"
+                            strokeLinecap="round" strokeLinejoin="round">
+
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                        </svg>
+
+                        <p>Inicio</p>
+                    </Link>
+
+                    <Link to="/semanal" className="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" strokeWidth="2"
+                            strokeLinecap="round" strokeLinejoin="round">
+
+                            <rect x="3" y="4" width="18" height="18" rx="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+
+                        <p>Menú</p>
+                    </Link>
+
+                </div>
+            </>
+        )}
     </div>
-    )}
-</div>
-    )
+)
 }
 
 export default Receta

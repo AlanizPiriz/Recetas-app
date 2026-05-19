@@ -5,6 +5,7 @@ import Login from './Login'
 import Admin from './Admin'
 import Semanal from './Semanal'
 import Lista from './Lista'
+import './Global.css'
 
 function App() {
   return (

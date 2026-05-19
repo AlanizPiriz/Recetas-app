@@ -1,212 +1,141 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
 .semanal {
-    min-height: 100vh;
-    background: #F5F0E8;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 20px;
-    font-family: 'Segoe UI', sans-serif;
-    position: relative;
-    z-index: 1;
+    width: 100%;
 }
 
-.semanal h1 {
-    font-size: 2rem;
-    color: #2C2C1A;
-    font-family: 'Georgia', serif;
-    font-style: italic;
-    margin-bottom: 8px;
-}
-
-.semanal .intro {
-    color: #7C7C6E;
-    font-size: 0.95rem;
-    text-align: center;
-    margin-bottom: 24px;
-}
+/* selector días */
 
 .selector-dias {
     display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 10px;
+    margin-bottom: 24px;
+    width: 100%;
+    max-width: 460px;
+    padding: 0 20px;
+    justify-content: center;
 }
 
 .dia-btn {
-    background: #EAF3DE;
+    background: white;
     border: 1.5px solid #C0DD97;
     color: #3B6D11;
-    padding: 10px 24px;
+    padding: 10px 18px;
     border-radius: 20px;
-    font-size: 1rem;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.2s;
-}
-
-.dia-btn:hover {
-    background: #C0DD97;
+    transition: .2s;
 }
 
 .dia-btn.activo {
     background: #3B6D11;
     color: #EAF3DE;
     border-color: #3B6D11;
-    font-weight: bold;
 }
+
+/* botón generar */
 
 .btn-generar {
+    width: calc(100% - 40px);
+    max-width: 460px;
     background: #3B6D11;
-    color: #EAF3DE;
+    color: white;
     border: none;
-    padding: 14px 36px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    border-radius: 50px;
+    border-radius: 22px;
+    padding: 18px;
+    font-size: 1rem;
+    font-weight: 700;
     cursor: pointer;
-    margin-bottom: 30px;
-    transition: transform 0.2s;
+    margin-bottom: 24px;
 }
 
-.btn-generar:hover {
-    transform: translateY(-2px);
-}
+/* cards */
 
 .lista-semanal {
+    width: calc(100% - 40px);
+    max-width: 460px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    width: 100%;
-    max-width: 500px;
+    gap: 14px;
 }
 
 .card-semanal {
     background: white;
-    border-radius: 16px;
+    border-radius: 18px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
     padding: 12px;
     text-decoration: none;
-    border: 0.5px solid #D3D1C7;
-    transition: transform 0.2s;
+    border: .5px solid #D3D1C7;
+    transition: transform .2s ease;
 }
 
 .card-semanal:hover {
-    transform: translateX(4px);
-}
-
-.dia-label {
-    font-size: 0.8rem;
-    font-weight: bold;
-    color: #3B6D11;
-    text-transform: uppercase;
-    min-width: 40px;
-}
-
-.card-semanal img {
-    width: 70px;
-    height: 70px;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-.card-semanal .nombre {
-    color: #2C2C1A;
-    font-size: 1rem;
-    font-weight: bold;
-}
-
-.btn-lista-semanal {
-    background: white;
-    color: #3B6D11;
-    border: 1.5px solid #3B6D11;
-    padding: 14px;
-    font-size: 1rem;
-    font-weight: bold;
-    border-radius: 16px;
-    cursor: pointer;
-    width: 100%;
-    max-width: 500px;
-    margin-top: 12px;
-    transition: transform 0.2s;
-}
-
-.btn-lista-semanal:hover {
-    background: #EAF3DE;
-    transform: translateX(4px);
-}
-
-.botonReceta {
-    display: block;
-    width: 100%;
-    max-width: 500px;
-    margin-bottom: 24px;
-    padding: 14px;
-    background: #3B6D11;
-    color: #EAF3DE;
-    border: none;
-    border-radius: 14px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-.botonReceta:hover {
     transform: translateY(-2px);
 }
 
-.semanal a {
-    text-decoration: none;
+.card-semanal img {
+    width: 84px;
+    height: 84px;
+    border-radius: 14px;
+    object-fit: cover;
 }
 
-.emojis-fondo {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
+.dia-label {
+    background: #EAF3DE;
+    color: #3B6D11;
+    padding: 34px 15px;
+    border-radius: 10px;
+    font-size: .75rem;
+    font-weight: 700;
+    align-self: flex-start;
 }
 
-.emoji-flotante {
-    position: absolute;
-    opacity: 0.08;
-    animation: flotar 6s ease-in-out infinite;
-    user-select: none;
+.nombre {
+    font-size: 1rem;
+    color: #2C2C1A;
+    font-weight: 700;
 }
 
-.emoji-flotante:nth-child(1)  { left: 5%;  top: 10%; animation-delay: 0s;    font-size: 2.5rem; }
-.emoji-flotante:nth-child(2)  { left: 85%; top: 15%; animation-delay: 1s;    font-size: 3.5rem; }
-.emoji-flotante:nth-child(3)  { left: 20%; top: 70%; animation-delay: 2s;    font-size: 2rem;   }
-.emoji-flotante:nth-child(4)  { left: 70%; top: 60%; animation-delay: 0.5s;  font-size: 4rem;   }
-.emoji-flotante:nth-child(5)  { left: 40%; top: 85%; animation-delay: 1.5s;  font-size: 2.5rem; }
-.emoji-flotante:nth-child(6)  { left: 90%; top: 80%; animation-delay: 3s;    font-size: 3rem;   }
-.emoji-flotante:nth-child(7)  { left: 10%; top: 45%; animation-delay: 2.5s;  font-size: 3.5rem; }
-.emoji-flotante:nth-child(8)  { left: 55%; top: 20%; animation-delay: 4s;    font-size: 2rem;   }
-.emoji-flotante:nth-child(9)  { left: 30%; top: 35%; animation-delay: 3.5s;  font-size: 2.5rem; }
-.emoji-flotante:nth-child(10) { left: 75%; top: 40%; animation-delay: 1s;    font-size: 3rem;   }
+/* botón lista */
 
-@keyframes flotar {
-    0%   { transform: translateY(0px) rotate(0deg);   }
-    50%  { transform: translateY(-20px) rotate(5deg); }
-    100% { transform: translateY(0px) rotate(0deg);   }
+.btn-lista-semanal {
+    width: calc(100% - 40px);
+    max-width: 460px;
+    background: #EAF3DE;
+    color: #3B6D11;
+    border: none;
+    border-radius: 20px;
+    padding: 18px;
+    font-weight: bold;
+    margin-top: 18px;
+    cursor: pointer;
 }
 
-@media (max-width: 767px) {
-    .selector-dias {
-        gap: 8px;
-    }
+.info-card-semanal {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
 
-    .dia-btn {
-        padding: 8px 16px;
-        font-size: 0.9rem;
-    }
+.mini-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.mini-tag {
+    font-size: .68rem;
+
+    color: #3B6D11;
+
+    background: #F2F7EA;
+
+    border: 1px solid #DDEBC8;
+
+    padding: 4px 8px;
+
+    border-radius: 12px;
+
+    font-weight: 600;
 }
