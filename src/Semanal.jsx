@@ -98,47 +98,45 @@ function Semanal() {
 
             <div className="lista-semanal">
                 {recetas.map((receta, index) => (
-                    <Link
+                <Link
                     to={`/receta/${receta._id}?from=semanal`}
                     key={receta._id}
                     className="card-semanal"
                 >
-                                
+                    {/* El indicador del día se queda suelto para alinearse perfectamente a la izquierda */}
                     <span className="dia-label">
                         Día {index + 1}
                     </span>
                                 
-                    <img src={receta.image} alt={receta.name} />
-                                
-                    <div className="info-card-semanal">
-                                
-                        <span className="nombre">
-                            {receta.name}
-                        </span>
-                                
-                        <div className="mini-tags">
-                                
-                            {receta.tags?.map(tag => (
-                                <span key={tag} className="mini-tag">
-                                
-                                    {tag === 'vegano' && '🌱 Vegano'}
-                                    {tag === 'vegetariano' && '🥦 Veggie'}
-                                    {tag === 'sinTacc' && '🌾 Sin TACC'}
-                                    {tag === 'sinLactosa' && '🥛 Sin lactosa'}
-                                    {tag === 'rapida' && '⚡ Rápida'}
-                                    {tag === 'postre' && '🍮 Postre'}
-                                    {tag === 'bajoEnCalorias' && '🥗 Light'}
-                                    {tag === 'altoEnProteinas' && '💪 Proteínas'}
-                            
-                                </span>
-                            ))}
-                
+                    {/* NUEVO CONTENEDOR: Agrupa la imagen y los textos de la receta */}
+                    <div className="card-body-wrapper">
+                        <img src={receta.image} alt={receta.name} />
+                                    
+                        <div className="info-card-semanal">
+                            <span className="nombre">
+                                {receta.name}
+                            </span>
+                                    
+                            <div className="mini-tags">
+                                {receta.tags?.map(tag => (
+                                    <span key={tag} className="mini-tag">
+                                        {tag === 'vegano' && '🌱 Vegano'}
+                                        {tag === 'vegetariano' && '🥦 Veggie'}
+                                        {tag === 'sinTacc' && '🌾 Sin TACC'}
+                                        {tag === 'sinLactosa' && '🥛 Sin lactosa'}
+                                        {tag === 'rapida' && '⚡ Rápida'}
+                                        {tag === 'postre' && '🍮 Postre'}
+                                        {tag === 'bajoEnCalorias' && '🥗 Light'}
+                                        {tag === 'altoEnProteinas' && '💪 Proteínas'}
+                                    </span>
+                                ))}
+                            </div>
                         </div>
-                        
                     </div>
-                        
+                            
                 </Link>
-                ))}
+            ))}
+
             </div>
             {recetas.length > 0 && (
             <button className="btn-lista-semanal" onClick={irAListaSemanal}>

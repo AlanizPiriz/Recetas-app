@@ -112,19 +112,8 @@
     cursor: pointer;
 }
 
-.info-card-semanal {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    flex: 1;
-}
 
 
-.mini-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-}
 
 @media (max-width: 359px) {
   .mini-tag:nth-child(n+2) {
@@ -156,4 +145,36 @@
   border-radius: 12px;
   font-weight: 600;
   flex-shrink: 0; /* Evita que el tag se deforme */
+}
+
+/* El nuevo contenedor toma el resto del espacio y alinea la foto con el texto */
+.card-body-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0; /* Evita que el contenedor se estire e infle la pantalla */
+}
+
+/* Forzamos a que la caja de textos use Flex vertical */
+.info-card-semanal {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+}
+
+/* Nos aseguramos de que el nombre de la comida no empuje los elementos hacia los lados */
+.info-card-semanal .nombre {
+    font-weight: 700;
+    color: #2b2b2b;
+    line-height: 1.2;
+}
+
+/* Los mini tags alineados correctamente */
+.mini-tags {
+    display: flex;
+    flex-wrap: wrap; /* Si agregas muchos, bajan ordenadamente sin romper la fila */
+    gap: 6px;
 }
