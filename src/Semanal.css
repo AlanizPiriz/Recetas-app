@@ -67,6 +67,7 @@
     text-decoration: none;
     border: .5px solid #D3D1C7;
     transition: transform .2s ease;
+    overflow: hidden;
 }
 
 .card-semanal:hover {
@@ -77,7 +78,7 @@
     width: 84px;
     height: 84px;
     border-radius: 14px;
-    object-fit: cover;
+    min-width: 0;
 }
 
 .dia-label {
@@ -118,24 +119,41 @@
     flex: 1;
 }
 
+
 .mini-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
 }
 
+@media (max-width: 359px) {
+  .mini-tag:nth-child(n+2) {
+    display: none !important;
+  }
+}
+
+/* 1. Muestra solo los 2 primeros tags en pantallas de celular */
+@media (max-width: 480px) {
+  .mini-tag:nth-child(n+3) {
+    display: none !important;
+  }
+}
+
+/* 2. En pantallas medianas/grandes permite ver hasta 3 o 4 */
+@media (min-width: 481px) {
+  .mini-tag:nth-child(n+5) {
+    display: none !important;
+  }
+}
+
+/* Tu estilo base del tag se mantiene igual */
 .mini-tag {
-    font-size: .68rem;
-
-    color: #3B6D11;
-
-    background: #F2F7EA;
-
-    border: 1px solid #DDEBC8;
-
-    padding: 4px 8px;
-
-    border-radius: 12px;
-
-    font-weight: 600;
+  font-size: .68rem;
+  color: #3B6D11;
+  background: #F2F7EA;
+  border: 1px solid #DDEBC8;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  flex-shrink: 0; /* Evita que el tag se deforme */
 }
