@@ -163,6 +163,7 @@ h1 {
     overflow: hidden;
     cursor: pointer;
     border: 0.5px solid #D3D1C7;
+    background-color: #3B6D11;
 }
 
 .imagen-container img {
