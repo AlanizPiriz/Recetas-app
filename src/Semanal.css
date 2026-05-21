@@ -61,13 +61,15 @@
     background: white;
     border-radius: 18px;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     gap: 14px;
     padding: 12px;
     text-decoration: none;
     border: .5px solid #D3D1C7;
     transition: transform .2s ease;
     overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .card-semanal:hover {
@@ -84,11 +86,16 @@
 .dia-label {
     background: #EAF3DE;
     color: #3B6D11;
-    padding: 34px 15px;
+    padding: 0px 15px;
     border-radius: 10px;
     font-size: .75rem;
     font-weight: 700;
-    align-self: flex-start;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    white-space: nowrap;
 }
 
 .nombre {
@@ -154,6 +161,7 @@
     gap: 12px;
     flex: 1;
     min-width: 0; /* Evita que el contenedor se estire e infle la pantalla */
+    overflow: hidden;
 }
 
 /* Forzamos a que la caja de textos use Flex vertical */
@@ -163,6 +171,7 @@
     gap: 6px;
     flex: 1;
     min-width: 0;
+    overflow: hidden;
 }
 
 /* Nos aseguramos de que el nombre de la comida no empuje los elementos hacia los lados */
@@ -170,6 +179,8 @@
     font-weight: 700;
     color: #2b2b2b;
     line-height: 1.2;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Los mini tags alineados correctamente */
