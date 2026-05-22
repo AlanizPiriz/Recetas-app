@@ -70,6 +70,7 @@
     overflow: hidden;
     width: 100%;
     box-sizing: border-box;
+    min-height: 96px;
 }
 
 .card-semanal:hover {
@@ -84,7 +85,6 @@
     border-radius: 14px;
     min-width: 0;
     object-fit: cover;
-
 }
 
 .dia-label {
@@ -156,6 +156,7 @@
   border-radius: 12px;
   font-weight: 600;
   flex-shrink: 0; /* Evita que el tag se deforme */
+  white-space: nowrap;
 }
 
 /* El nuevo contenedor toma el resto del espacio y alinea la foto con el texto */
@@ -166,6 +167,12 @@
     flex: 1;
     min-width: 0; /* Evita que el contenedor se estire e infle la pantalla */
     overflow: hidden;
+}
+
+.card-body-wrapper img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
 }
 
 /* Forzamos a que la caja de textos use Flex vertical */
@@ -190,6 +197,13 @@
 /* Los mini tags alineados correctamente */
 .mini-tags {
     display: flex;
-    flex-wrap: wrap; /* Si agregas muchos, bajan ordenadamente sin romper la fila */
+    flex-wrap: nowrap; /* Si agregas muchos, bajan ordenadamente sin romper la fila */
     gap: 6px;
+    overflow: hidden;
+}
+
+.mini-tag--extra {
+    color: #3B6D11;
+    background: #F2F7EA;
+    border: 1px solid #DDEBC8;
 }

@@ -40,6 +40,7 @@ function Semanal() {
     navigate('/lista?from=semanal')
     }
 
+
     function generarMenu() {
     setCargando(true)
     const tagsActivos = JSON.parse(localStorage.getItem('tagsActivos') || '[]')
@@ -97,46 +98,50 @@ function Semanal() {
             </button>
 
             <div className="lista-semanal">
-                {recetas.map((receta, index) => (
-                <Link
-                    to={`/receta/${receta._id}?from=semanal`}
-                    key={receta._id}
-                    className="card-semanal"
-                >
-                    {/* El indicador del día se queda suelto para alinearse perfectamente a la izquierda */}
-                    <span className="dia-label">
-                        Día {index + 1}
-                    </span>
-                                
-                    {/* NUEVO CONTENEDOR: Agrupa la imagen y los textos de la receta */}
-                    <div className="card-body-wrapper">
-                        <img src={receta.image} alt={receta.name} />
-                                    
-                        <div className="info-card-semanal">
-                            <span className="nombre">
-                                {receta.name}
+                {recetas.map((receta, index) => {
+                    const tagsVisibles = receta.tags?.slice(0, 1) ?? [];
+                    const restantes = (receta.tags?.length ?? 0) - tagsVisibles.length;
+                
+                    return (
+                        <Link
+                            to={`/receta/${receta._id}?from=semanal`}
+                            key={receta._id}
+                            className="card-semanal"
+                        >
+                            <span className="dia-label">
+                                Día {index + 1}
                             </span>
-                                    
-                            <div className="mini-tags">
-                                {receta.tags?.map(tag => (
-                                    <span key={tag} className="mini-tag">
-                                        {tag === 'vegano' && '🌱 Vegano'}
-                                        {tag === 'vegetariano' && '🥦 Veggie'}
-                                        {tag === 'sinTacc' && '🌾 Sin TACC'}
-                                        {tag === 'sinLactosa' && '🥛 Sin lactosa'}
-                                        {tag === 'rapida' && '⚡ Rápida'}
-                                        {tag === 'postre' && '🍮 Postre'}
-                                        {tag === 'bajoEnCalorias' && '🥗 Light'}
-                                        {tag === 'altoEnProteinas' && '💪 Proteínas'}
+                    
+                            <div className="card-body-wrapper">
+                                <img src={receta.image} alt={receta.name} />
+                    
+                                <div className="info-card-semanal">
+                                    <span className="nombre">
+                                        {receta.name}
                                     </span>
-                                ))}
+                    
+                                    <div className="mini-tags">
+                                        {tagsVisibles.map(tag => (
+                                            <span key={tag} className="mini-tag">
+                                                {tag === 'vegano' && '🌱 Vegano'}
+                                                {tag === 'vegetariano' && '🥦 Veggie'}
+                                                {tag === 'sinTacc' && '🌾 Sin TACC'}
+                                                {tag === 'sinLactosa' && '🥛 Sin lactosa'}
+                                                {tag === 'rapida' && '⚡ Rápida'}
+                                                {tag === 'postre' && '🍮 Postre'}
+                                                {tag === 'bajoEnCalorias' && '🥗 Light'}
+                                                {tag === 'altoEnProteinas' && '💪 Proteínas'}
+                                            </span>
+                                        ))}
+                                        {restantes > 0 && (
+                                            <span className="mini-tag mini-tag--extra">+{restantes}</span>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                            
-                </Link>
-            ))}
-
+                        </Link>
+                    );
+                })}
             </div>
             {recetas.length > 0 && (
             <button className="btn-lista-semanal" onClick={irAListaSemanal}>
