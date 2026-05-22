@@ -33,17 +33,21 @@ function Buscador() {
         }
     }, [])
 
+    useEffect(() => {
+      precargarSiguiente(null)
+    }, [])
+
     function precargarSiguiente(excludeId) {
       let url = `${API_URL}/api/recipes/random`
-      const params = [`exclude=${excludeId}`]
+      const params = []
+      if (excludeId) params.push(`exclude=${excludeId}`)
       if (tagsActivos.length) params.push(`tags=${tagsActivos.join(',')}`)
-      url += `?${params.join('&')}`
-
+      if (params.length) url += `?${params.join('&')}`
+      
       fetch(url)
         .then(res => res.json())
         .then(datos => {
           if (!datos.error) {
-            // Precargamos la imagen también
             const img = new Image()
             img.src = datos.image
             setRecetaSiguiente(datos)
