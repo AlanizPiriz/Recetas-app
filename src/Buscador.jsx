@@ -17,7 +17,7 @@ function Buscador() {
         return guardados ? JSON.parse(guardados) : []
     })
     const [hayLista, setHayLista] = useState(!!localStorage.getItem('listaCompras'))
-
+    const [recetaSiguiente, setRecetaSiguiente] = useState(null)
     const [menuPreview, setMenuPreview] = useState(() => {
     const guardado = localStorage.getItem('menuSemanal')
     return guardado ? JSON.parse(guardado).slice(0, 3) : []
@@ -33,20 +33,48 @@ function Buscador() {
         }
     }, [])
 
-    function iluminame() {
-    let url = `${API_URL}/api/recipes/random`
-    const params = []
-    if (ultimoId) params.push(`exclude=${ultimoId}`)
-    if (tagsActivos.length) params.push(`tags=${tagsActivos.join(',')}`)
-    if (params.length) url += `?${params.join('&')}`
+    function precargarSiguiente(excludeId) {
+      let url = `${API_URL}/api/recipes/random`
+      const params = [`exclude=${excludeId}`]
+      if (tagsActivos.length) params.push(`tags=${tagsActivos.join(',')}`)
+      url += `?${params.join('&')}`
 
-    fetch(url)
+      fetch(url)
         .then(res => res.json())
         .then(datos => {
+          if (!datos.error) {
+            // Precargamos la imagen también
+            const img = new Image()
+            img.src = datos.image
+            setRecetaSiguiente(datos)
+          }
+        })
+    }
+
+    function iluminame() {
+      if (recetaSiguiente) {
+        // Ya la tenemos precargada, la mostramos al instante
+        setReceta(recetaSiguiente)
+        setUltimoId(recetaSiguiente._id)
+        setRecetaSiguiente(null)
+        precargarSiguiente(recetaSiguiente._id)
+      } else {
+        // Primera vez, fetch normal
+        let url = `${API_URL}/api/recipes/random`
+        const params = []
+        if (ultimoId) params.push(`exclude=${ultimoId}`)
+        if (tagsActivos.length) params.push(`tags=${tagsActivos.join(',')}`)
+        if (params.length) url += `?${params.join('&')}`
+    
+        fetch(url)
+          .then(res => res.json())
+          .then(datos => {
             if (datos.error) return
             setReceta(datos)
             setUltimoId(datos._id)
-        })
+            precargarSiguiente(datos._id) // 👈 precargamos la siguiente
+          })
+      }
     }
 
     function cambiarTag(tag) {
