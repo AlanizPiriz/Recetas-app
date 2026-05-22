@@ -43,7 +43,7 @@ function Buscador() {
       if (excludeId) params.push(`exclude=${excludeId}`)
       if (tagsActivos.length) params.push(`tags=${tagsActivos.join(',')}`)
       if (params.length) url += `?${params.join('&')}`
-      
+
       fetch(url)
         .then(res => res.json())
         .then(datos => {
@@ -97,6 +97,16 @@ function Buscador() {
         fetch(`${API_URL}/api/recipes?q=${lista}`)
             .then(res => res.json())
             .then(datos => setResultados(datos))
+    }
+
+    function abrirBuscador() {
+      setMostrarBuscador(!mostrarBuscador)
+      setTimeout(() => {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: 'smooth'
+        })
+      }, 100)
     }
 
     function formatearTag(tag) {
@@ -258,7 +268,7 @@ function Buscador() {
     </Link>
     <button
         className="nav-item nav-btn"
-        onClick={() => setMostrarBuscador(!mostrarBuscador)}> 
+        onClick={abrirBuscador}> 
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="11" cy="11" r="8"/>
             <line x1="21" y1="21" x2="16.65" y2="16.65"/>

@@ -109,6 +109,10 @@ function Receta() {
     } catch (err) {
         console.log(err)
     }
+      window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
     }
 
     return (
