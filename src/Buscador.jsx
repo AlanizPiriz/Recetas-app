@@ -68,10 +68,8 @@ function Buscador() {
         const params = []
         if (ultimoId) params.push(`exclude=${ultimoId}`)
         if (tagsActivos.length) {
-            params.push(`tags=${tagsActivos.join(',')}`)
-            }else{
-                params.push(`excludeTags=postre`)
-            }
+            params.push(`tags=${tagsActivos.join(',')}`)}
+            
         if (params.length) url += `?${params.join('&')}`
     
         fetch(url)
