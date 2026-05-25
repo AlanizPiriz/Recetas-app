@@ -6,6 +6,7 @@ import Admin from './Admin'
 import Semanal from './Semanal'
 import Lista from './Lista'
 import './Global.css'
+import Favoritos from './Favoritos'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/semanal" element={<Semanal />} />
         <Route path="/lista" element={<Lista />} />
+        <Route path="/favoritos" element={<Favoritos />} />
       </Routes>
     </HashRouter>
   )

@@ -600,11 +600,11 @@ h1 {
 }
 
 .menu-preview-card {
-    flex: 1;
     text-decoration: none;
     display: flex;
     flex-direction: column;
     gap: 8px;
+    flex: 0 0 calc((100% - 20px) / 3);
 }
 
 .menu-preview-img-wrapper {

@@ -23,6 +23,11 @@ function Buscador() {
     return guardado ? JSON.parse(guardado).slice(0, 3) : []
     })
 
+    const [favorites, setFavorites] = useState(() => {
+    const saved = localStorage.getItem("recetasFavoritas")
+    return saved ? JSON.parse(saved) : []
+    })
+
     useEffect(() => {
         if (menuPreview.length === 0) {
             fetch(`${API_URL}/api/recipes/weekly?days=3`)
@@ -204,23 +209,45 @@ function Buscador() {
             <Link to="/semanal" className="ver-completo">Ver completo →</Link>
         </div>
         <div className="menu-preview-cards">
-            {menuPreview.map((receta, index) => {
-                        const dias = ['LUN', 'MAR', 'MIÉ', 'JUE', 'VIE']
-                        return (
-                            <Link to={`/receta/${receta._id}`} key={receta._id} className="menu-preview-card">
-                                <div className="menu-preview-img-wrapper">
-                                    <div className="dia-badge">
-                                        <span className="dia-nombre">{dias[index]}</span>
-                                        <span className="dia-numero">{index + 1}</span>
-                                    </div>
-                                    <img src={receta.image} alt={receta.name} />
-                                </div>
-                                <p>{receta.name}</p>
-                            </Link>
-                        )
-                    })}
+    {menuPreview.map((receta, index) => {
+        const dias = ['LUN', 'MAR', 'MIÉ', 'JUE', 'VIE']
+        return (
+            <Link to={`/receta/${receta._id}`} key={receta._id} className="menu-preview-card">
+                <div className="menu-preview-img-wrapper">
+                    <div className="dia-badge">
+                        <span className="dia-nombre">{dias[index]}</span>
+                        <span className="dia-numero">{index + 1}</span>
+                    </div>
+                    <img src={receta.image} alt={receta.name} />
                 </div>
+                <p>{receta.name}</p>
+            </Link>
+        )
+    })}
+</div>
+
+</div> 
+)}
+{favorites.length > 0 && (
+    <div className="menu-preview">
+        <div className="menu-preview-header">
+            <div className="menu-preview-titulo">
+                <span className="menu-preview-icono">♥</span>
+                <h3>Mis favoritas</h3>
             </div>
+            <Link to="/favoritos" className="ver-completo">Ver todas →</Link>
+        </div>
+        <div className="menu-preview-cards">
+            {favorites.slice(0, 3).map((receta) => (
+                <Link to={`/receta/${receta._id}`} key={receta._id} className="menu-preview-card">
+                    <div className="menu-preview-img-wrapper">
+                        <img src={receta.image} alt={receta.name} />
+                    </div>
+                    <p>{receta.name}</p>
+                </Link>
+            ))}
+        </div>
+    </div>
 )}
 
         {mostrarBuscador && (
@@ -268,6 +295,16 @@ function Buscador() {
         </svg>
         <p>Menú</p>
     </Link>
+
+    <Link to="/favoritos" className="nav-item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="2"
+            strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <p>Favoritas</p>
+    </Link>
+
     <button
         className="nav-item nav-btn"
         onClick={abrirBuscador}> 
