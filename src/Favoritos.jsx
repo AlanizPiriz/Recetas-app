@@ -1,18 +1,65 @@
 import { Link, useNavigate } from "react-router-dom"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import './Favoritos.css'
+import { useAuth } from './context/AuthContext' // 1. Importar el contexto de autenticación
+
+const API_URL = 'https://recipes-api-z0gz.onrender.com'
 
 function Favoritos() {
     const navigate = useNavigate()
-    const [favorites, setFavorites] = useState(() => {
-        const saved = localStorage.getItem("recetasFavoritas")
-        return saved ? JSON.parse(saved) : []
-    })
+    const { user, token } = useAuth() // 2. Obtener el usuario y token actuales
+    
+    // Inicializar vacío, se llenará dinámicamente
+    const [favorites, setFavorites] = useState([])
+    const [loading, setLoading] = useState(true)
 
-    function quitarFavorito(id) {
-        const nuevos = favorites.filter(r => r._id !== id)
-        setFavorites(nuevos)
-        localStorage.setItem("recetasFavoritas", JSON.stringify(nuevos))
+    // 3. Efecto para cargar favoritos desde la API o desde LocalStorage
+    useEffect(() => {
+        if (user) {
+            // Caso con cuenta -> API
+            setLoading(true)
+            fetch(`${API_URL}/api/users/${user.id}/favorites`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) setFavorites(data)
+            })
+            .catch(err => console.error('Error cargando favoritos de la API:', err))
+            .finally(() => setLoading(false))
+        } else {
+            // Caso sin cuenta -> LocalStorage
+            const saved = localStorage.getItem("recetasFavoritas")
+            setFavorites(saved ? JSON.parse(saved) : [])
+            setLoading(false)
+        }
+    }, [user, token])
+
+    // 4. Modificar función para eliminar según el origen de los datos
+    async function quitarFavorito(id) {
+        if (user) {
+            // Optimistic update en la interfaz
+            setFavorites(prev => prev.filter(r => r._id !== id))
+            
+            // Petición de borrado a la API
+            await fetch(`${API_URL}/api/users/${user.id}/favorites/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            }).catch(err => {
+                console.error(err)
+                // Aquí podrías recargar si falla para restaurar el estado anterior
+            })
+        } else {
+            // Borrado local tradicional
+            const nuevos = favorites.filter(r => r._id !== id)
+            setFavorites(nuevos)
+            localStorage.setItem("recetasFavoritas", JSON.stringify(nuevos))
+        }
+    }
+
+    // 5. Mostrar pantalla de carga opcional mientras responde la API
+    if (loading) {
+        return <div className="favoritos-page"><p className="loading-txt">Cargando tus recetas favoritas...</p></div>
     }
 
     return (
@@ -72,7 +119,7 @@ function Favoritos() {
                         strokeLinecap="round" strokeLinejoin="round">
                         <rect x="3" y="4" width="18" height="18" rx="2"/>
                         <line x1="16" y1="2" x2="16" y2="6"/>
-                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="8" y1="2" x2="8" height="6"/>
                         <line x1="3" y1="10" x2="21" y2="10"/>
                     </svg>
                     <p>Menú</p>

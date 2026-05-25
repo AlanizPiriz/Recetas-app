@@ -3,9 +3,10 @@ import { useState, useEffect } from "react"
 import './Receta.css'
 import { motion } from 'framer-motion'
 import random from './assets/aleatorio.png'
+import { useAuth } from './context/AuthContext'
+import AuthModal from './components/AuthModal'
 
-
-
+const API_URL = 'https://recipes-api-z0gz.onrender.com'
 
 function Receta() {
     const { id } = useParams()
@@ -13,22 +14,95 @@ function Receta() {
     const navigate = useNavigate()
     const location = useLocation()
     const from = new URLSearchParams(location.search).get('from')
+    
+    // 1. Inicializar desde localStorage solo si no hay usuario autenticado de entrada
     const [favorites, setFavorites] = useState(() => {
-    const saved = localStorage.getItem("recetasFavoritas")
-        return saved ? JSON.parse(saved) : []
+        const local = localStorage.getItem('recetasFavoritas')
+        return local ? JSON.parse(local) : []
     })
+    
+    // Estado para bloquear clicks accidentales antes de que cargue la API
+    const [loadingFavs, setLoadingFavs] = useState(true)
 
+    const { user, token } = useAuth()
+    const [showAuthModal, setShowAuthModal] = useState(false)
+    const [showSyncMsg, setShowSyncMsg] = useState(false)
 
-    function toggleFavorito() {
-    setFavorites(prev => {
-        const yaEsta = prev.some(r => r._id === receta._id)
-        const nuevos = yaEsta
-            ? prev.filter(r => r._id !== receta._id)
-            : [...prev, { _id: receta._id, name: receta.name, image: receta.image }]
+    // 2. Cargar favoritos de la API si el usuario cambia/existe
+    useEffect(() => {
+        if (user) {
+            setLoadingFavs(true)
+            fetch(`${API_URL}/api/users/${user.id}/favorites`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log('favoritos de la API:', data)
+                if (Array.isArray(data)) setFavorites(data)
+            })
+            .catch(err => console.log('Error cargando favoritos:', err))
+            .finally(() => setLoadingFavs(false))
+        } else {
+            setLoadingFavs(false)
+        }
+    }, [user, token])
+
+    async function toggleFavorito() {
+        if (!receta) return // Validar que la receta ya exista en el estado
+        if (loadingFavs) return // Evitar clicks si la API no ha respondido
+
+        console.log('favorites al momento del click:', favorites.length)
         
-            localStorage.setItem("recetasFavoritas", JSON.stringify(nuevos))
-            return nuevos
-        })
+        if (user) {
+            // Con cuenta → API
+            const yaEsta = favorites.some(r => r._id === receta._id)
+            console.log('yaEsta:', yaEsta)
+
+            if (yaEsta) {
+                // Optimistic update: actualiza la UI antes para que sea instantáneo
+                setFavorites(prev => prev.filter(r => r._id !== receta._id))
+                
+                await fetch(`${API_URL}/api/users/${user.id}/favorites/${receta._id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                }).catch(err => {
+                    // Revertir si falla la API
+                    console.error(err)
+                    setFavorites(prev => [...prev, receta])
+                })
+            } else {
+                const nuevoFav = { _id: receta._id, name: receta.name, image: receta.image }
+                setFavorites(prev => [...prev, nuevoFav])
+
+                await fetch(`${API_URL}/api/users/${user.id}/favorites`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ recipeId: receta._id })
+                }).catch(err => {
+                    // Revertir si falla la API
+                    console.error(err)
+                    setFavorites(prev => prev.filter(r => r._id !== receta._id))
+                })
+            }
+
+        } else {
+            // Sin cuenta → localStorage
+            const yaEsta = favorites.some(r => r._id === receta._id)
+            const nuevos = yaEsta
+                ? favorites.filter(r => r._id !== receta._id)
+                : [...favorites, { _id: receta._id, name: receta.name, image: receta.image }]
+            
+            setFavorites(nuevos)
+            localStorage.setItem('recetasFavoritas', JSON.stringify(nuevos))
+
+            if (!yaEsta) {
+                setShowSyncMsg(true)
+                setTimeout(() => setShowSyncMsg(false), 4000)
+            }
+        }
     }
 
 
@@ -234,6 +308,16 @@ function Receta() {
                     </button>
 
                 </div>
+                {showSyncMsg && (
+                        <div className="sync-msg" onClick={() => setShowAuthModal(true)}>
+                            💾 Creá una cuenta para no perder tus favoritas →
+                        </div>
+                    )}
+                    
+                    {showAuthModal && (
+                        <AuthModal onClose={() => setShowAuthModal(false)} />
+                    )}
+
 
                 <div className="bottom-nav">
 
@@ -271,7 +355,6 @@ function Receta() {
                         </svg>
                         <p>Favoritas</p>
                     </Link>
-
                 </div>
             </>
         )}
